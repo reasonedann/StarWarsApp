@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { observable, computed } from 'mobx';
+import { observable, computed, action } from 'mobx';
 
 export interface SwapiHeroType {
     name: string,
@@ -37,6 +37,14 @@ export interface HeroType {
     url: string,
     created: string,
     edited: string,
+}
+
+export enum FilterType {
+    None,
+    Gender,
+    HairColor,
+    EyeColor,
+    SkinColor
 }
 
 const getHeroes = async (): Promise<Array<HeroType>> => {
@@ -81,6 +89,10 @@ export class  AppStore {
 
     @observable heroes: Array<HeroType> = [];
 
+    @observable filterValue: string = '';
+
+    @observable filterType: FilterType = FilterType.None;
+
     static createForContext(): AppStore {
         return new AppStore();
     }
@@ -90,24 +102,46 @@ export class  AppStore {
         this.heroes = heroes;
     }
 
-    @computed get eyeColorOptions() {
-        const eyeColorOptions = new Set(this.heroes.flatMap(hero => hero.gender));
-        return Array.from(eyeColorOptions).sort();
+    @computed get genderOptions() {
+        const genderOptions = new Set(this.heroes.flatMap(hero => hero.gender));
+        return Array.from(genderOptions).sort();
     }
 
-    @computed get genderOptions() {
-        const genderOptions = new Set(this.heroes.flatMap(hero => hero.eyeColor));
-        return (Array.from(genderOptions)).sort();
+    @computed get eyeColorOptions() {
+        const eyeColorOptions = new Set(this.heroes.flatMap(hero => hero.eyeColor));
+        return Array.from(eyeColorOptions).sort();
     }
 
     @computed get skinColorOptions() {
         const skinColorOptions = new Set(this.heroes.flatMap(hero => hero.skinColor));
-        return (Array.from(skinColorOptions)).sort();
+        return Array.from(skinColorOptions).sort();
     }
 
     @computed get hairColorOptions() {
         const hairColorOptions = new Set(this.heroes.flatMap(hero => hero.hairColor))
-        return (Array.from(hairColorOptions)).sort();
+        return Array.from(hairColorOptions).sort();
+    }
+
+    @action setFilter = (filterType: FilterType, filterValue: string) => {
+        this.filterType = filterType;
+        this.filterValue = filterValue;
+    }
+
+    @computed get filteredHeros() {
+        return this.heroes.filter(hero => {
+            switch (this.filterType) {
+                case FilterType.None:
+                    return true;
+                case FilterType.Gender:
+                    return this.filterValue === hero.gender;
+                case FilterType.HairColor:
+                    return hero.hairColor.includes(this.filterValue);
+                case FilterType.EyeColor:
+                    return hero.eyeColor.includes(this.filterValue);
+                case FilterType.SkinColor:
+                    return hero.skinColor.includes(this.filterValue);
+            }
+        })
     }
 }
 

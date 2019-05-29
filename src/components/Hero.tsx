@@ -10,7 +10,7 @@ const Row = styled.tr`
 const Cell = styled.td`
     border: 1px solid #ddd;
     padding: 8px;
-    min-width: 80px;
+    min-width: 100px;
 `;
 
 interface HeroTableType {

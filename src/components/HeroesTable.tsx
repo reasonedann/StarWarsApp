@@ -13,7 +13,6 @@ const TableWrapper = styled.table`
 const Title = styled.th`
     text-transform: uppercase;
     padding: 12px 0;
-    text-align: center;
     background-color: rosybrown;
     color: white;
 `;
@@ -26,7 +25,7 @@ class HeroesTable extends AppStoreComponent {
     }
 
     render() {
-        const { heroes } = this.appState;
+        const { filteredHeros } = this.appState;
 
         return (
             <TableWrapper>
@@ -37,7 +36,7 @@ class HeroesTable extends AppStoreComponent {
                 <Title>Skin color</Title>
                 <Title>Eye color</Title>
                 <Title>Hair color</Title>
-                {heroes.map((hero: HeroType) =>
+                {filteredHeros.map((hero: HeroType) =>
                     <Hero
                         key={hero.url}
                         name={hero.name}

@@ -3,14 +3,15 @@ import { observer } from 'mobx-react';
 
 import HeroesTable from './HeroesTable';
 import Buttons from './Buttons';
-import { AppStoreComponent } from '../stores/AppStore';
+import { AppStoreComponent, FilterType } from '../stores/AppStore';
 
 import styled from '@emotion/styled';
+import { ResetButton } from './ResetButton';
 
 const Container = styled.div`
     display: flex;
     flex-direction: column;
-    margin: 10px auto;
+    margin: 30px auto;
     min-width: 460px;
     max-width: 1000px;
     align-items: center;
@@ -25,10 +26,11 @@ export class StarWarsApp extends AppStoreComponent {
 
         return (
             <Container>
-                <Buttons options={genderOptions} label={'Gender: '} />
-                <Buttons options={eyeColorOptions} label={'Eye color: '} />
-                <Buttons options={skinColorOptions} label={'Skin color: '} />
-                <Buttons options={hairColorOptions} label={'Hair color: '} />
+                <Buttons options={genderOptions} filterType={FilterType.Gender} label={'Gender: '} />
+                <Buttons options={eyeColorOptions} filterType={FilterType.EyeColor} label={'Eye color: '} />
+                <Buttons options={skinColorOptions} filterType={FilterType.SkinColor} label={'Skin color: '} />
+                <Buttons options={hairColorOptions} filterType={FilterType.HairColor} label={'Hair color: '} />
+                <ResetButton filterType={FilterType.None} />
                 <HeroesTable />
             </Container>
         );
