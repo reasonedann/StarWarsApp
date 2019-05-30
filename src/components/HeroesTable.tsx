@@ -38,6 +38,7 @@ class HeroesTable extends AppStoreComponent {
                 <Title>Hair color</Title>
                 {filteredHeros.map((hero: HeroType) =>
                     <Hero
+                        
                         key={hero.url}
                         name={hero.name}
                         gender={hero.gender}

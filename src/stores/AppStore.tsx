@@ -143,6 +143,13 @@ export class  AppStore {
             }
         })
     }
+
+    @observable isShowing: boolean = false;
+
+    toggleCloseModal = () => {
+        !this.isShowing === this.isShowing
+    }
+
 }
 
 const AppContext = React.createContext(AppStore.createForContext());

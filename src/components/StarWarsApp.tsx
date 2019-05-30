@@ -3,6 +3,7 @@ import { observer } from 'mobx-react';
 
 import HeroesTable from './HeroesTable';
 import Buttons from './Buttons';
+import Modal from './Modal';
 import { AppStoreComponent, FilterType } from '../stores/AppStore';
 
 import styled from '@emotion/styled';
@@ -22,7 +23,7 @@ export class StarWarsApp extends AppStoreComponent {
 
     render() {
 
-        const {genderOptions, eyeColorOptions, skinColorOptions, hairColorOptions } = this.appState;
+        const {genderOptions, eyeColorOptions, skinColorOptions, hairColorOptions, isShowing } = this.appState;
 
         return (
             <Container>
@@ -32,6 +33,7 @@ export class StarWarsApp extends AppStoreComponent {
                 <Buttons options={hairColorOptions} filterType={FilterType.HairColor} label={'Hair color: '} />
                 <ResetButton filterType={FilterType.None} />
                 <HeroesTable />
+                { isShowing && <Modal show={isShowing}/> }
             </Container>
         );
     }
