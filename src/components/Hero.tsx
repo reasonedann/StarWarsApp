@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import styled from '@emotion/styled';
-import { AppStoreComponent, HeroType, HeroModalType } from '../stores/AppStore';
+import { AppStoreComponent, HeroType } from '../stores/AppStore';
 
 const Row = styled.tr`
     :nth-child(even){background-color: #f2f2f2;}
@@ -35,8 +35,6 @@ class Hero extends AppStoreComponent<HeroTableType> {
         const skinColorStr = skinColor.join(comma);
         const eyeColorStr =  eyeColor.join(hyphen);
         const hairColorStr = hairColor.join(comma);
-
-        console.log('parampamapamapam', hero)
 
         return (
             <Row onClick={() => this.appState.openModal(hero)}>

@@ -57,10 +57,6 @@ export interface HeroModalType {
     edited: string
 }
 
-interface FilmType {
-    title: string
-}
-
 export enum FilterType {
     None,
     Gender,
@@ -117,24 +113,6 @@ const getHeroes = async (url: string): Promise<GetHeroesType> => {
         next,
         previous
     }
-}
-
-
-const getFilm = async (film: string): Promise<Array<FilmType>> => {
-    const response = await fetch(film);
-    if (!response.ok) {
-        console.log('Error:', response.statusText)
-    }
-    const jsonResponse = await response.json();
-
-    console.log(jsonResponse);
-
-    if (jsonResponse.results) {
-        return jsonResponse.results.values.map((film: FilmType) => ({
-            title: film.title
-        }));
-    }
-    return []
 }
 
 export class AppStore {
@@ -204,9 +182,20 @@ export class AppStore {
 
     openModal = (hero: HeroModalType) => {
         this.heroModalData = hero;
+        this.getHomeworld();
+        this.getFilmTitles();
+        this.getSpecies();
+        this.getStarships();
+        this.getVehicles();
     }
+
     closeModal = () => {
-        this.heroModalData = null
+        this.heroModalData = null;
+        this.homeworld = '';
+        this.filmTitles = [];
+        this.species = [];
+        this.starships = [];
+        this.vehicles = [];
     }
 
     @observable count: number = 0;
@@ -233,9 +222,41 @@ export class AppStore {
         return 1;
     }
 
-    @computed get filmName() {
+    @observable homeworld: string = '';
+    @observable filmTitles: Array<string> = [];
+    @observable species: Array<string> = [];
+    @observable starships: Array<string> = [];
+    @observable vehicles: Array<string> = [];
+
+    @action getHomeworld = async () => {
         if (this.heroModalData) {
-            return this.heroModalData.films.map(async (url) => {
+            const url = this.heroModalData.homeworld;
+            const response = await fetch(url);
+            if (!response.ok) {
+                console.log('Error:', response.statusText)
+            }
+            const jsonResponse = await response.json();
+            this.homeworld = jsonResponse.name;
+        }
+    }
+
+    @action getFilmTitles = async () => {
+        if (this.heroModalData) {
+            const promises = this.heroModalData.films.map(async (url) => {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    console.log('Error:', response.statusText)
+                }
+                const jsonResponse = await response.json();
+                return jsonResponse.title;
+            });
+            this.filmTitles = await Promise.all(promises);
+        }
+    }
+
+    @action getSpecies = async () => {
+        if (this.heroModalData) {
+            const promises = this.heroModalData.species.map(async (url) => {
                 const response = await fetch(url);
                 if (!response.ok) {
                     console.log('Error:', response.statusText)
@@ -243,14 +264,41 @@ export class AppStore {
                 const jsonResponse = await response.json();
                 return jsonResponse.name;
             });
+            this.species = await Promise.all(promises);
         }
     }
 
-    getFilmTitleFromSwapi = async (url: string) => {
-        await getFilm(url);
+    @action getStarships = async () => {
+        if (this.heroModalData) {
+            const promises = this.heroModalData.starships.map(async (url) => {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    console.log('Error:', response.statusText)
+                }
+                const jsonResponse = await response.json();
+                return jsonResponse.model;
+            });
+            this.starships = await Promise.all(promises);
+        }
+    }
+
+    @action getVehicles = async () => {
+        if (this.heroModalData) {
+            const promises = this.heroModalData.vehicles.map(async (url) => {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    console.log('Error:', response.statusText)
+                }
+                const jsonResponse = await response.json();
+                return jsonResponse.name;
+            });
+            this.vehicles = await Promise.all(promises);
+        }
     }
 
 }
+
+
 
 const AppContext = React.createContext(AppStore.createForContext());
 

@@ -68,6 +68,15 @@ const Label = styled.span`
     font-weight: 700;
 `;
 
+const FilmTitle = styled.li`
+    font-style: italic;
+    list-style: none;
+`;
+
+const Item = styled.li`
+    list-style: none;
+`;
+
 interface ModalPropsTypes {
     hero: HeroModalType | null,
     onClose: () => void
@@ -76,30 +85,39 @@ interface ModalPropsTypes {
 @observer
 class Modal extends AppStoreComponent<ModalPropsTypes> {
 
-    render() {
+    renderHeroData(hero: HeroModalType) {
+        const { name, birthYear, gender, mass, height, eyeColor, hairColor, skinColor, created, edited } = hero;
+        const {  homeworld, filmTitles, species, starships, vehicles } = this.appState;
 
-        const renderHeroData = (hero: HeroModalType) => {
-            const { name, birthYear, gender, mass, height, eyeColor, hairColor, skinColor, homeworld, films, species, starships, vehicles, created, edited } = hero;
-            return (
-                <div>
-                    <Info><Label>Name:</Label> {name}</Info>
-                    <Info><Label>Year of birth:</Label> {birthYear}</Info>
-                    <Info><Label>Gender:</Label> {gender}</Info>
-                    <Info><Label>Mass:</Label> {mass}</Info>
-                    <Info><Label>Height:</Label> {height}</Info>
-                    <Info><Label>Color of eyes:</Label> {eyeColor}</Info>
-                    <Info><Label>Color of hair:</Label> {hairColor}</Info>
-                    <Info><Label>Color of skin:</Label> {skinColor}</Info>
-                    <Info><Label>Homeworld:</Label> {homeworld}</Info>
-                    <Info><Label>Films:</Label> {films}</Info>
-                    <Info><Label>Species:</Label> {species}</Info>
-                    <Info><Label>Starships:</Label> {starships}</Info>
-                    <Info><Label>Vehicles:</Label> {vehicles}</Info>
-                    <Info><Label>When was created?</Label> {created}</Info>
-                    <Info><Label>When was edited?</Label> {edited}</Info>
-                </div>
-            )
-        }
+        const renderedFilms = filmTitles.map(film => <FilmTitle>{film}</FilmTitle>);
+        const renderedStarships = starships.map(starship => <Item>{starship}</Item>);
+        const renderedVehicles = vehicles.map(vehicle => <Item>{vehicle}</Item>);
+
+        const creationDate = created.substring(0, 10) // TO DO funkcja która zmienia format daty!!
+        const editionDate = edited.substring(0, 10);
+
+        return (
+            <div>
+                {name && <Info><Label>Name:</Label> {name}</Info>}
+                {birthYear && <Info><Label>Year of birth:</Label> {birthYear}</Info>}
+                {gender && <Info><Label>Gender:</Label> {gender}</Info>}
+                {mass && <Info><Label>Mass:</Label> {mass}</Info>}
+                {height && <Info><Label>Height:</Label> {height}</Info>}
+                {eyeColor && <Info><Label>Color of eyes:</Label> {eyeColor}</Info>}
+                {hairColor && <Info><Label>Color of hair:</Label> {hairColor}</Info>}
+                {skinColor && <Info><Label>Color of skin:</Label> {skinColor}</Info>}
+                {homeworld && <Info><Label>Homeworld:</Label> {homeworld}</Info>}
+                {filmTitles && <Info><Label>Films:</Label> {renderedFilms}</Info>}
+                {species && <Info><Label>Species:</Label> {species}</Info>}
+                {starships && <Info><Label>Starships:</Label> {renderedStarships}</Info>}
+                {vehicles && <Info><Label>Vehicles:</Label> {renderedVehicles}</Info>}
+                {created && <Info><Label>When was created?</Label> {creationDate}</Info>}
+                {edited && <Info><Label>When was edited?</Label> {editionDate}</Info>}
+            </div>
+        )
+    }
+
+    render() {
         const { hero, onClose } = this.props;
         return (
             <ModalContainer show={hero !== null}>
@@ -109,7 +127,7 @@ class Modal extends AppStoreComponent<ModalPropsTypes> {
                         <CloseBtn onClick={onClose}>x</CloseBtn>
                     </ModalHeader>
                     <ModalBody>
-                        {hero && renderHeroData(hero)}
+                        {hero && this.renderHeroData(hero)}
                     </ModalBody>
                 </ModalWrapper>
             </ModalContainer>
