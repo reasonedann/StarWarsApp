@@ -8,6 +8,7 @@ import { AppStoreComponent, FilterType } from '../stores/AppStore';
 
 import styled from '@emotion/styled';
 import { ResetButton } from './ResetButton';
+import Pagination from './Pagination';
 
 const Container = styled.div`
     display: flex;
@@ -23,17 +24,17 @@ export class StarWarsApp extends AppStoreComponent {
 
     render() {
 
-        const {genderOptions, eyeColorOptions, skinColorOptions, hairColorOptions, isShowing } = this.appState;
-
+        const {genderOptions, eyeColorOptions, skinColorOptions, hairColorOptions, heroModalData, closeModal } = this.appState;
         return (
             <Container>
                 <Buttons options={genderOptions} filterType={FilterType.Gender} label={'Gender: '} />
                 <Buttons options={eyeColorOptions} filterType={FilterType.EyeColor} label={'Eye color: '} />
                 <Buttons options={skinColorOptions} filterType={FilterType.SkinColor} label={'Skin color: '} />
                 <Buttons options={hairColorOptions} filterType={FilterType.HairColor} label={'Hair color: '} />
-                <ResetButton filterType={FilterType.None} />
                 <HeroesTable />
-                { isShowing && <Modal show={isShowing}/> }
+                <Modal hero={heroModalData} onClose={closeModal} />
+                <Pagination />
+                <ResetButton filterType={FilterType.None} />
             </Container>
         );
     }

@@ -25,7 +25,7 @@ class HeroesTable extends AppStoreComponent {
     }
 
     render() {
-        const { filteredHeros } = this.appState;
+        const { filteredHeroes } = this.appState;
 
         return (
             <TableWrapper>
@@ -36,9 +36,8 @@ class HeroesTable extends AppStoreComponent {
                 <Title>Skin color</Title>
                 <Title>Eye color</Title>
                 <Title>Hair color</Title>
-                {filteredHeros.map((hero: HeroType) =>
+                {filteredHeroes.map((hero: HeroType) =>
                     <Hero
-                        
                         key={hero.url}
                         name={hero.name}
                         gender={hero.gender}
@@ -47,6 +46,7 @@ class HeroesTable extends AppStoreComponent {
                         skinColor={hero.skinColor}
                         eyeColor={hero.eyeColor}
                         hairColor={hero.hairColor}
+                        hero={hero}
                     />
                 )}
             </TableWrapper>

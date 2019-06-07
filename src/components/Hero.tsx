@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import styled from '@emotion/styled';
-import { AppStoreComponent } from '../stores/AppStore';
+import { AppStoreComponent, HeroType, HeroModalType } from '../stores/AppStore';
 
 const Row = styled.tr`
     :nth-child(even){background-color: #f2f2f2;}
@@ -22,26 +22,25 @@ interface HeroTableType {
     mass: string,
     skinColor: Array<string>,
     eyeColor: Array<string>,
-    hairColor: Array<string>
+    hairColor: Array<string>,
+    hero: HeroType
 }
 
 class Hero extends AppStoreComponent<HeroTableType> {
 
-    handleOpenModal = () => {
-        this.appState.isShowing = true
-    }
-
     render() {
         const comma = ', ';
         const hyphen = '-';
-        const { name, height, mass, skinColor, gender, eyeColor, hairColor } = this.props;
+        const { name, height, mass, skinColor, gender, eyeColor, hairColor, hero } = this.props;
         const skinColorStr = skinColor.join(comma);
         const eyeColorStr =  eyeColor.join(hyphen);
         const hairColorStr = hairColor.join(comma);
 
+        console.log('parampamapamapam', hero)
+
         return (
-            <Row>
-                <Cell onClick={this.handleOpenModal}>{name}</Cell>
+            <Row onClick={() => this.appState.openModal(hero)}>
+                <Cell>{name}</Cell>
                 <Cell>{gender}</Cell>
                 <Cell>{height}</Cell>
                 <Cell>{mass}</Cell>

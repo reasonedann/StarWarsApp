@@ -5,15 +5,15 @@ import { AppStoreComponent, FilterType } from '../stores/AppStore';
 import { observer } from 'mobx-react';
 
 const Button = styled.button`
-    border-radius: 10px;
-    background: gray;
-    color: white;
-    font-weight: 600;
-    margin-top: 20px;
-    padding: 10px;
+    background: lightgray;
+    color: black;
     cursor: pointer;
+    font-size: 16px;
+    padding: 5px 30px;
+    text-transform: uppercase;
+
     :hover {
-        background: lightgray;
+        background: silver;
         color: black;
     }
 `;
@@ -33,7 +33,7 @@ export class ResetButton extends AppStoreComponent<PropsType> {
     render() {
         return (
             <div>
-                <Button onClick={this.handleClickToDelete}>Click to reset</Button>
+                <Button onClick={this.handleClickToDelete}>Reset</Button>
             </div>
         )
     }

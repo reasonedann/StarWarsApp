@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { AppStoreComponent } from '../stores/AppStore';
-import { observable } from 'mobx';
+import { AppStoreComponent, HeroModalType } from '../stores/AppStore';
+import { observer } from 'mobx-react';
 
 import styled from '@emotion/styled';
-import { observer } from 'mobx-react';
 
 interface PropsTypes {
     show: boolean
@@ -28,7 +27,7 @@ const ModalWrapper = styled.div`
 `;
 
 const ModalHeader = styled.header`
-    background: #263238;
+    background: rosybrown;
     height: 40px;
     line-height: 40px;
     padding: 5px 20px;
@@ -60,40 +59,58 @@ const CloseBtn = styled.span`
     }
 `;
 
-const Button = styled.button`
-    border: none;
-    color: white;
-    cursor: pointer;
-    font-weight: bold;
-    outline: none;
-    padding: 10px;
-    background-color: #1b5e20;
-    float: right;
+const Info = styled.p`
+    font-size: 16px;
+    margin: 5px 0;
 `;
 
-interface PropsTypes {
-    show: boolean
+const Label = styled.span`
+    font-weight: 700;
+`;
+
+interface ModalPropsTypes {
+    hero: HeroModalType | null,
+    onClose: () => void
 }
 
 @observer
-class Modal extends AppStoreComponent<PropsTypes> {
-
-    handleCloseModal = () => {
-        this.appState.isShowing = false
-    }
+class Modal extends AppStoreComponent<ModalPropsTypes> {
 
     render() {
+
+        const renderHeroData = (hero: HeroModalType) => {
+            const { name, birthYear, gender, mass, height, eyeColor, hairColor, skinColor, homeworld, films, species, starships, vehicles, created, edited } = hero;
+            return (
+                <div>
+                    <Info><Label>Name:</Label> {name}</Info>
+                    <Info><Label>Year of birth:</Label> {birthYear}</Info>
+                    <Info><Label>Gender:</Label> {gender}</Info>
+                    <Info><Label>Mass:</Label> {mass}</Info>
+                    <Info><Label>Height:</Label> {height}</Info>
+                    <Info><Label>Color of eyes:</Label> {eyeColor}</Info>
+                    <Info><Label>Color of hair:</Label> {hairColor}</Info>
+                    <Info><Label>Color of skin:</Label> {skinColor}</Info>
+                    <Info><Label>Homeworld:</Label> {homeworld}</Info>
+                    <Info><Label>Films:</Label> {films}</Info>
+                    <Info><Label>Species:</Label> {species}</Info>
+                    <Info><Label>Starships:</Label> {starships}</Info>
+                    <Info><Label>Vehicles:</Label> {vehicles}</Info>
+                    <Info><Label>When was created?</Label> {created}</Info>
+                    <Info><Label>When was edited?</Label> {edited}</Info>
+                </div>
+            )
+        }
+        const { hero, onClose } = this.props;
         return (
-            <ModalContainer show={this.appState.isShowing}>
+            <ModalContainer show={hero !== null}>
                 <ModalWrapper>
                     <ModalHeader>
                         <Title>Read more about Star Wars' hero:</Title>
-                        <CloseBtn onClick={this.handleCloseModal}>x</CloseBtn>
+                        <CloseBtn onClick={onClose}>x</CloseBtn>
                     </ModalHeader>
                     <ModalBody>
-                        costamcostamcostam
+                        {hero && renderHeroData(hero)}
                     </ModalBody>
-                    <Button onClick={this.handleCloseModal}>Close</Button>
                 </ModalWrapper>
             </ModalContainer>
         )

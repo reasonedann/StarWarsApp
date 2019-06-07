@@ -12,9 +12,9 @@ const ButtonsContainer = styled.div`
 `;
 
 const Button = styled.button`
-    border-radius: 10px;
-    background: darkgray;
-    color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+    color: black;
     margin-right: 10px;
     padding: 5px;
     cursor: pointer;
