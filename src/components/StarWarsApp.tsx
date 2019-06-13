@@ -1,26 +1,28 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 
+import styled from '@emotion/styled';
+
 import HeroesTable from './HeroesTable';
 import Buttons from './Buttons';
 import Modal from './Modal';
-import { AppStoreComponent, FilterType } from '../stores/AppStore';
+import { AppStoreComponent } from '../stores/AppStore';
 
-import styled from '@emotion/styled';
-import { ResetButton } from './ResetButton';
+import ResetButton from './ResetButton';
 import Pagination from './Pagination';
+import { FilterType } from '../stores/interfaces';
 
 const Container = styled.div`
     display: flex;
     flex-direction: column;
-    margin: 30px auto;
+    margin: 0 auto;
     min-width: 460px;
     max-width: 1000px;
     align-items: center;
 `;
 
 @observer
-export class StarWarsApp extends AppStoreComponent {
+class StarWarsApp extends AppStoreComponent {
 
     render() {
 
@@ -39,3 +41,5 @@ export class StarWarsApp extends AppStoreComponent {
         );
     }
 };
+
+export default StarWarsApp;

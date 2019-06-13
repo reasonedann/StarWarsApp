@@ -1,30 +1,8 @@
 import * as React from 'react';
 
-import styled from '@emotion/styled';
-import { AppStoreComponent, HeroType } from '../stores/AppStore';
-
-const Row = styled.tr`
-    :nth-child(even){background-color: #f2f2f2;}
-    :hover {background-color: #ddd;}
-`;
-
-const Cell = styled.td`
-    border: 1px solid #ddd;
-    padding: 8px;
-    min-width: 100px;
-    cursor: pointer;
-`;
-
-interface HeroTableType {
-    name: string,
-    gender: string,
-    height: string,
-    mass: string,
-    skinColor: Array<string>,
-    eyeColor: Array<string>,
-    hairColor: Array<string>,
-    hero: HeroType
-}
+import { AppStoreComponent } from '../stores/AppStore';
+import { HeroTableType } from '../stores/interfaces';
+import { Row, Cell } from './HeroesTable.style';
 
 class Hero extends AppStoreComponent<HeroTableType> {
 

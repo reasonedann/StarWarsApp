@@ -1,42 +1,11 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
+
 import { AppStoreComponent } from '../stores/AppStore';
-
-import styled from '@emotion/styled';
-
-interface PagePropsType {
-    isCurrentPage?: boolean;
-}
-
-const PaginationWrapper = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 30px 0;
-`;
-
-const Page = styled.button<PagePropsType>`
-    background-color: ${props => props.isCurrentPage ? 'silver' : 'inherit'};
-    color: ${props => props.isCurrentPage ? 'white' : 'black'};
-    float: left;
-    padding: 8px 16px;
-    margin: 0 5px;
-    border: none;
-    border-radius: 5px;
-
-    :hover {
-        background-color: lightgray;
-        border-radius: 5px;
-    }
-    :active {
-        background-color: grey;
-        color: white;
-        border-radius: 5px;
-    }
-`;
+import { Page, PaginationWrapper } from './Pagination.style';
 
 @observer
-export default class Pagination extends AppStoreComponent {
+class Pagination extends AppStoreComponent {
 
     handleClickPrevPage = () => {
         const previous = this.appState.previous;
@@ -65,6 +34,8 @@ export default class Pagination extends AppStoreComponent {
             )
         });
 
+        console.log('strony', this.appState.pageNumbers)
+
         return (
             <PaginationWrapper>
                 {
@@ -73,10 +44,11 @@ export default class Pagination extends AppStoreComponent {
                 { renderedPageNumbers }
                 {
                     this.appState.next && <Page onClick={this.handleClickNextPage}>&raquo;</Page>
-
                 }
 
             </PaginationWrapper>
         )
     }
 }
+
+export default Pagination;

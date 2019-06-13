@@ -1,34 +1,9 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 
-import styled from '@emotion/styled';
-import { FilterType, AppStoreComponent } from '../stores/AppStore';
-
-const ButtonsContainer = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 10px 0;
-`;
-
-const Button = styled.button`
-    border: 1px solid black;
-    border-radius: 5px;
-    color: black;
-    margin-right: 10px;
-    padding: 5px;
-    cursor: pointer;
-    :hover {
-        background: lightgray;
-        color: black;
-    }
-`;
-
-const Label = styled.p`
-    font-size: 18px;
-    font-weight: 600;
-    padding-right: 15px;
-`;
+import { AppStoreComponent } from '../stores/AppStore';
+import { FilterType } from '../stores/interfaces';
+import { ButtonsContainer, Label, Button } from './Buttons.style';
 
 interface PropsType {
     options: Array<string>,

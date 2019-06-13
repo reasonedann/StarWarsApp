@@ -1,76 +1,6 @@
 import * as React from 'react';
 import { observable, computed, action } from 'mobx';
-
-export interface SwapiHeroType {
-    name: string,
-    birth_year: string,
-    eye_color: string,
-    gender: string,
-    hair_color: string,
-    height: string,
-    mass: string,
-    skin_color: string,
-    homeworld: string,
-    films: Array<string>,
-    species: Array<string>,
-    starships: Array<string>,
-    vehicles: Array<string>,
-    url: string,
-    created: string,
-    edited: string
-}
-
-export interface HeroType {
-    name: string,
-    birthYear: string,
-    eyeColor: Array<string>,
-    gender: string,
-    hairColor: Array<string>,
-    height: string,
-    mass: string,
-    skinColor: Array<string>,
-    homeworld: string,
-    films: Array<string>,
-    species: Array<string>,
-    starships: Array<string>,
-    vehicles: Array<string>,
-    url: string,
-    created: string,
-    edited: string,
-}
-
-export interface HeroModalType {
-    name: string,
-    birthYear: string,
-    eyeColor: Array<string>,
-    gender: string,
-    hairColor: Array<string>,
-    height: string,
-    mass: string,
-    skinColor: Array<string>,
-    homeworld: string,
-    films: Array<string>,
-    species: Array<string>,
-    starships: Array<string>,
-    vehicles: Array<string>,
-    created: string,
-    edited: string
-}
-
-export enum FilterType {
-    None,
-    Gender,
-    HairColor,
-    EyeColor,
-    SkinColor
-}
-
-interface GetHeroesType {
-    heroesArray: Array<HeroType>,
-    count: number,
-    next: string | null,
-    previous: string | null
-}
+import { HeroType, SwapiHeroType, FilterType, HeroModalType, GetHeroesType } from './interfaces';
 
 const getHeroes = async (url: string): Promise<GetHeroesType> => {
     const response = await fetch(url);
@@ -115,6 +45,7 @@ const getHeroes = async (url: string): Promise<GetHeroesType> => {
     }
 }
 
+
 export class AppStore {
 
     static createForContext(): AppStore {
@@ -122,6 +53,22 @@ export class AppStore {
     }
 
     @observable heroes: Array<HeroType> = [];
+
+    @observable filterValue: string = '';
+    @observable filterType: FilterType = FilterType.None;
+
+    @observable heroModalData: HeroModalType | null = null;
+
+    @observable homeworld: string = '';
+    @observable filmTitles: Array<string> = [];
+    @observable species: Array<string> = [];
+    @observable starships: Array<string> = [];
+    @observable vehicles: Array<string> = [];
+
+    @observable count: number = 0;
+    @observable next: string | null | undefined = null;
+    @observable previous: string | null | undefined = null;
+
 
     getHeroesFromSwapi = async (url?: string | null) => {
         const urlPeople = url ? url : 'https://swapi.co/api/people';
@@ -132,101 +79,6 @@ export class AppStore {
         this.previous = payload.previous
     }
 
-    @computed get genderOptions() {
-        const genderOptions = new Set(this.heroes.flatMap(hero => hero.gender));
-        return Array.from(genderOptions).sort();
-    }
-
-    @computed get eyeColorOptions() {
-        const eyeColorOptions = new Set(this.heroes.flatMap(hero => hero.eyeColor));
-        return Array.from(eyeColorOptions).sort();
-    }
-
-    @computed get skinColorOptions() {
-        const skinColorOptions = new Set(this.heroes.flatMap(hero => hero.skinColor));
-        return Array.from(skinColorOptions).sort();
-    }
-
-    @computed get hairColorOptions() {
-        const hairColorOptions = new Set(this.heroes.flatMap(hero => hero.hairColor))
-        return Array.from(hairColorOptions).sort();
-    }
-
-    @observable filterValue: string = '';
-
-    @observable filterType: FilterType = FilterType.None;
-
-    @action setFilter = (filterType: FilterType, filterValue: string) => {
-        this.filterType = filterType;
-        this.filterValue = filterValue;
-    }
-
-    @computed get filteredHeroes() { // trzeba tu ludziów ze wszyskich stron a nie tylko z jednej żeby się na górze ustawiały wszystkie filtry
-        return this.heroes.filter(hero => {
-            switch (this.filterType) {
-                case FilterType.None:
-                    return true;
-                case FilterType.Gender:
-                    return this.filterValue === hero.gender;
-                case FilterType.HairColor:
-                    return hero.hairColor.includes(this.filterValue);
-                case FilterType.EyeColor:
-                    return hero.eyeColor.includes(this.filterValue);
-                case FilterType.SkinColor:
-                    return hero.skinColor.includes(this.filterValue);
-            }
-        })
-    }
-
-    @observable heroModalData: HeroModalType | null = null;
-
-    openModal = (hero: HeroModalType) => {
-        this.heroModalData = hero;
-        this.getHomeworld();
-        this.getFilmTitles();
-        this.getSpecies();
-        this.getStarships();
-        this.getVehicles();
-    }
-
-    closeModal = () => {
-        this.heroModalData = null;
-        this.homeworld = '';
-        this.filmTitles = [];
-        this.species = [];
-        this.starships = [];
-        this.vehicles = [];
-    }
-
-    @observable count: number = 0;
-
-    @observable next: string | null | undefined = null;
-
-    @observable previous: string | null | undefined = null;
-
-    @computed get pageNumbers() {
-        const pageNumbers = [];
-        for (let i = 1; i <= Math.ceil(this.count / 10); i++) {
-          pageNumbers.push(i);
-        }
-        return pageNumbers
-    }
-
-    @computed get currentPage() {
-        if (this.next) {
-            return parseInt(this.next.split('=')[1]) - 1;
-        }
-        if (this.previous) {
-            return parseInt(this.previous.split('=')[1]) + 1;
-        }
-        return 1;
-    }
-
-    @observable homeworld: string = '';
-    @observable filmTitles: Array<string> = [];
-    @observable species: Array<string> = [];
-    @observable starships: Array<string> = [];
-    @observable vehicles: Array<string> = [];
 
     @action getHomeworld = async () => {
         if (this.heroModalData) {
@@ -296,9 +148,86 @@ export class AppStore {
         }
     }
 
+    openModal = (hero: HeroModalType) => {
+        this.heroModalData = hero;
+        this.getHomeworld();
+        this.getFilmTitles();
+        this.getSpecies();
+        this.getStarships();
+        this.getVehicles();
+    }
+
+    closeModal = () => {
+        this.heroModalData = null;
+        this.homeworld = '';
+        this.filmTitles = [];
+        this.species = [];
+        this.starships = [];
+        this.vehicles = [];
+    }
+
+    @action setFilter = (filterType: FilterType, filterValue: string) => {
+        this.filterType = filterType;
+        this.filterValue = filterValue;
+    }
+
+
+    @computed get genderOptions() {
+        const genderOptions = new Set(this.heroes.flatMap(hero => hero.gender));
+        return Array.from(genderOptions).sort();
+    }
+
+    @computed get eyeColorOptions() {
+        const eyeColorOptions = new Set(this.heroes.flatMap(hero => hero.eyeColor));
+        return Array.from(eyeColorOptions).sort();
+    }
+
+    @computed get skinColorOptions() {
+        const skinColorOptions = new Set(this.heroes.flatMap(hero => hero.skinColor));
+        return Array.from(skinColorOptions).sort();
+    }
+
+    @computed get hairColorOptions() {
+        const hairColorOptions = new Set(this.heroes.flatMap(hero => hero.hairColor))
+        return Array.from(hairColorOptions).sort();
+    }
+
+    @computed get filteredHeroes() {
+        return this.heroes.filter(hero => {
+            switch (this.filterType) {
+                case FilterType.None:
+                    return true;
+                case FilterType.Gender:
+                    return this.filterValue === hero.gender;
+                case FilterType.HairColor:
+                    return hero.hairColor.includes(this.filterValue);
+                case FilterType.EyeColor:
+                    return hero.eyeColor.includes(this.filterValue);
+                case FilterType.SkinColor:
+                    return hero.skinColor.includes(this.filterValue);
+            }
+        })
+    }
+
+    @computed get pageNumbers() {
+        const pageNumbers = [];
+        for (let i = 1; i <= Math.ceil(this.count / 10); i++) {
+          pageNumbers.push(i);
+        }
+        return pageNumbers
+    }
+
+    @computed get currentPage() {
+        if (this.next) {
+            return parseInt(this.next.split('=')[1]) - 1;
+        }
+        if (this.previous) {
+            return parseInt(this.previous.split('=')[1]) + 1;
+        }
+        return 1;
+    }
+
 }
-
-
 
 const AppContext = React.createContext(AppStore.createForContext());
 

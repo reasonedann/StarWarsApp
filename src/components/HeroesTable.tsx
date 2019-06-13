@@ -1,22 +1,10 @@
 import * as React from 'react';
-import Hero from './Hero';
 import { observer } from 'mobx-react';
-import { HeroType, AppStoreComponent } from '../stores/AppStore';
 
-import styled from '@emotion/styled';
-
-const TableWrapper = styled.table`
-    border-collapse: collapse;
-    margin-top: 30px;
-`;
-
-const Title = styled.th`
-    text-transform: uppercase;
-    padding: 12px 0;
-    background-color: rosybrown;
-    color: white;
-`;
-
+import { AppStoreComponent } from '../stores/AppStore';
+import { HeroType } from '../stores/interfaces';
+import Hero from './Hero';
+import { TableWrapper, Title } from './HeroesTable.style';
 @observer
 class HeroesTable extends AppStoreComponent {
 
