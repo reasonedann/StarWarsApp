@@ -36,23 +36,23 @@ export interface HeroType {
     edited: string,
 }
 
-export interface HeroModalType {
-    name: string,
-    birthYear: string,
-    eyeColor: Array<string>,
-    gender: string,
-    hairColor: Array<string>,
-    height: string,
-    mass: string,
-    skinColor: Array<string>,
-    homeworld: string,
-    films: Array<string>,
-    species: Array<string>,
-    starships: Array<string>,
-    vehicles: Array<string>,
-    created: string,
-    edited: string
-}
+// export interface HeroModalType {
+//     name: string,
+//     birthYear: string,
+//     eyeColor: Array<string>,
+//     gender: string,
+//     hairColor: Array<string>,
+//     height: string,
+//     mass: string,
+//     skinColor: Array<string>,
+//     homeworld: string,
+//     films: Array<string>,
+//     species: Array<string>,
+//     starships: Array<string>,
+//     vehicles: Array<string>,
+//     created: string,
+//     edited: string
+// }
 
 export enum FilterType {
     None,
@@ -77,5 +77,5 @@ export interface HeroTableType {
     skinColor: Array<string>,
     eyeColor: Array<string>,
     hairColor: Array<string>,
-    hero: HeroType
+    url: string
 }

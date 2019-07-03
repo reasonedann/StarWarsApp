@@ -9,13 +9,15 @@ class Hero extends AppStoreComponent<HeroTableType> {
     render() {
         const comma = ', ';
         const hyphen = '-';
-        const { name, height, mass, skinColor, gender, eyeColor, hairColor, hero } = this.props;
+        const { name, height, mass, skinColor, gender, eyeColor, hairColor, url } = this.props;
         const skinColorStr = skinColor.join(comma);
         const eyeColorStr =  eyeColor.join(hyphen);
         const hairColorStr = hairColor.join(comma);
+        const { redirectToHero } = this.appState.currentView;
+        const id = url;
 
         return (
-            <Row onClick={() => this.appState.openModal(hero)}>
+            <Row onClick={() => redirectToHero(id)}>
                 <Cell>{name}</Cell>
                 <Cell>{gender}</Cell>
                 <Cell>{height}</Cell>

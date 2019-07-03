@@ -26,7 +26,7 @@ class StarWarsApp extends AppStoreComponent {
 
     render() {
 
-        const {genderOptions, eyeColorOptions, skinColorOptions, hairColorOptions, heroModalData, closeModal } = this.appState;
+        const {genderOptions, eyeColorOptions, skinColorOptions, hairColorOptions } = this.appState;
         return (
             <Container>
                 <Buttons options={genderOptions} filterType={FilterType.Gender} label={'Gender: '} />
@@ -34,7 +34,7 @@ class StarWarsApp extends AppStoreComponent {
                 <Buttons options={skinColorOptions} filterType={FilterType.SkinColor} label={'Skin color: '} />
                 <Buttons options={hairColorOptions} filterType={FilterType.HairColor} label={'Hair color: '} />
                 <HeroesTable />
-                <Modal hero={heroModalData} onClose={closeModal} />
+                <Modal />
                 <Pagination />
                 <ResetButton filterType={FilterType.None} />
             </Container>
